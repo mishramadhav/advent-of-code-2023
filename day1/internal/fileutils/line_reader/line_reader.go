@@ -1,11 +1,13 @@
 package linereader
 
-import "os"
+import (
+	"io"
+)
 
 // FileLineReader reads a file line by line.
 type FileLineReader struct {
-	// file is the file to read.
-	file *os.File
+	// reader is the reader/stream to read from.
+	reader io.ReaderAt
 	// offset is the current offset in the file.
 	offset int64
 	// readError is the error that occurred during the last read.
@@ -13,11 +15,9 @@ type FileLineReader struct {
 }
 
 // NewFileReaderByLine creates a new FileReaderByLine
-// for the given file.
-//
-// The file is not closed by this function.
-func NewFileReaderByLine(file *os.File) *FileLineReader {
-	return &FileLineReader{file: file}
+// for the given reader.
+func NewFileReaderByLine(reader io.ReaderAt) *FileLineReader {
+	return &FileLineReader{reader: reader}
 }
 
 func (f *FileLineReader) ReadLine() (string, error) {
@@ -30,7 +30,7 @@ func (f *FileLineReader) ReadLine() (string, error) {
 
 	for {
 		// Read one byte at a time.
-		_, err := f.file.ReadAt(buffer, f.offset)
+		_, err := f.reader.ReadAt(buffer, f.offset)
 		if err != nil {
 			f.readError = err
 			return "", err

@@ -17,7 +17,7 @@ func main() {
 
 	defer file.Close()
 
-	lineReader := fileutils.NewFileReaderByLine(file)
+	lineReader := fileutils.NewBufferedFileReader(file)
 	ans := processFile(lineReader)
 
 	log.Printf("Answer is %d\n", ans)

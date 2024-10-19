@@ -5,7 +5,7 @@ GOFLAGS=-v
 MAIN_FILES=*.go
 
 # Phony targets
-.PHONY: all build run clean test
+.PHONY: all build run clean test bench
 
 # Default target
 all: build
@@ -29,3 +29,8 @@ clean:
 test:
 	@echo "Running tests..."
 	@$(GO) test $(GOFLAGS) ./...
+
+# Run benchmarks
+bench:
+	@echo "Running benchmarks..."
+	@$(GO) test $(GOFLAGS) -bench=. -benchmem
